@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
     Box,
@@ -6,7 +7,6 @@ import {
     Card,
     CardContent,
     CardHeader,
-    Link,
     TextField,
     InputAdornment,
     IconButton,
@@ -87,7 +87,7 @@ export default function SignUp() {
             }}>
                 <CardHeader title={
                     <Typography variant="h4" align="center">
-                        Sign UP
+                        Sign Up
                     </Typography>
                 } />
                 <CardContent>
@@ -127,7 +127,6 @@ export default function SignUp() {
                             fullWidth
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm Password"
-                            sx={{ mb: 3 }}
                             required
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -153,6 +152,7 @@ export default function SignUp() {
                         </FormHelperText>
 
                         <Button
+                            sx={{ mt: 3 }}
                             disabled={loading}
                             type="submit"
                             fullWidth
@@ -165,7 +165,7 @@ export default function SignUp() {
             </Card>
 
             <Typography mt={2} variant="subtitle1">
-                Already have an account? <Link href="/login" sx={{ fontWeight: "bold" }} underline="hover">Log In</Link>
+                Already have an account? <Link to="/login" style={{ fontWeight: "bold", color: "#1976d2", textDecoration: "none" }}>Log In</Link>
             </Typography>
 
         </Box>
