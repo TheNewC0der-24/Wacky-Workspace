@@ -37,7 +37,7 @@ export default function SignUp() {
 
     const { signup } = useAuth();
 
-
+    const [error, setError] = useState("");
     const [alertVisible, setAlertVisible] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -45,9 +45,11 @@ export default function SignUp() {
         event.preventDefault();
 
         try {
+            setError("");
             setLoading(true);
             await signup(email, password);
         } catch (error) {
+            setError(error.message);
             setAlertVisible(true);
             setTimeout(() => {
                 setAlertVisible(false);
