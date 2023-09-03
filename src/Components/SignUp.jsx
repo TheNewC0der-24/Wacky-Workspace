@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
     Box,
@@ -20,6 +20,8 @@ import { BiSolidShow, BiSolidHide } from "react-icons/bi";
 import { useAuth } from "../Context/AuthContext";
 
 export default function SignUp() {
+
+    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -48,6 +50,7 @@ export default function SignUp() {
             setError("");
             setLoading(true);
             await signup(email, password);
+            navigate("/");
         } catch (error) {
             setError(error.message);
             setAlertVisible(true);
