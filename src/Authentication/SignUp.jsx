@@ -8,23 +8,24 @@ import {
     InputAdornment,
     IconButton,
     Typography,
+    FormHelperText,
     Alert,
-    Container,
-    Divider
+    Container
 } from "@mui/material";
 
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
-import { FcGoogle } from "react-icons/fc";
 
 import { useAuth } from "../Context/AuthContext";
 
-export default function Login() {
+export default function SignUp() {
 
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -32,8 +33,9 @@ export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const { login } = useAuth();
+    const { signup } = useAuth();
 
     const [error, setError] = useState("");
     const [alertVisible, setAlertVisible] = useState(false);
@@ -45,7 +47,7 @@ export default function Login() {
         try {
             setError("");
             setLoading(true);
-            await login(email, password);
+            await signup(email, password);
             navigate("/");
         } catch (error) {
             setError(error.message);
@@ -82,11 +84,11 @@ export default function Login() {
 
             <Container maxWidth="sm">
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                    Log into WackyWorkspace
+                    Create an account
                 </Typography>
 
                 <Typography variant="subtitle1" color="text.secondary" mb={3}>
-                    Please enter your details to continue.
+                    Sign up to start using WackyWorkspace
                 </Typography>
 
                 <form onSubmit={handleSubmit}>
@@ -99,15 +101,11 @@ export default function Login() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-
-                    <Typography variant="subtitle1" align="end" gutterBottom>
-                        <Link to="/forgot-password" style={{ fontWeight: "bold", color: "#1976d2", textDecoration: "none", }}>Forgot Password?</Link>
-                    </Typography>
                     <TextField
                         fullWidth
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
-                        sx={{ mb: 2 }}
+                        sx={{ mb: 3 }}
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -125,6 +123,34 @@ export default function Login() {
 
                         }}
                     />
+                    <TextField
+                        fullWidth
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        sx={{ mb: 2 }}
+                        required
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        InputProps={{
+                            endAdornment:
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowConfirmPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showConfirmPassword ? <BiSolidHide /> : <BiSolidShow />}
+                                    </IconButton>
+                                </InputAdornment>
+
+                        }}
+                    />
+
+                    <FormHelperText error={true}>
+                        {
+                            password !== confirmPassword && "Passwords do not match"
+                        }
+                    </FormHelperText>
 
                     <Button
                         disabled={loading}
@@ -133,36 +159,14 @@ export default function Login() {
                         size="large"
                         variant="contained"
                     >
-                        Login
+                        Sign Up
                     </Button>
                 </form>
 
-                <Box mt={2}>
-                    <Typography variant="subtitle1" align="center">
-                        Don't have an account? <Link to="/signup" style={{ fontWeight: "bold", color: "#1976d2", textDecoration: "none", borderBottom: "1px solid #1976d2" }}>Sign Up</Link>
-                    </Typography>
-                </Box>
-
-                <Typography variant="subtitle1" align="center" mt={3} mb={3}>
-                    <Divider>
-                        Or
-                    </Divider>
+                <Typography mt={2} variant="subtitle1" align="center">
+                    Already have an account? <Link to="/login" style={{ fontWeight: "bold", color: "#1976d2", textDecoration: "none", borderBottom: "1px solid #1976d2" }}>Log In</Link>
                 </Typography>
-
-                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button
-                        size="large"
-                        variant="contained"
-                        startIcon={<FcGoogle />}
-                        sx={{ textTransform: "none", backgroundColor: "rgb(25 118 210 / 4%)", color: "#000", "&:hover": { backgroundColor: "rgb(25 118 210 / 4%)" } }}
-                        disabled
-                    >
-                        Log in with Google
-                    </Button>
-                </Box>
-
             </Container>
         </Box>
     )
 }
-
