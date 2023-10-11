@@ -84,7 +84,7 @@ export default function ForgetPassword() {
                     Reset your password
                 </Typography>
 
-                <Typography variant="subtitle1" mb={3}>
+                <Typography variant="subtitle1" color="text.secondary" mb={3}>
                     Enter your email and we'll send you instructions on how to reset your <br /> password.
                 </Typography>
 
