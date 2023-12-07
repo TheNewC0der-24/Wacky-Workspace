@@ -6,6 +6,7 @@ import { Button, IconButton, Menu, MenuItem, Divider, Tooltip, Card, CardHeader,
 import { FaFolder, FaTrash } from "react-icons/fa6";
 import { HiDotsVertical } from "react-icons/hi";
 import { FiEdit3 } from "react-icons/fi";
+import { BsFillFolderSymlinkFill } from "react-icons/bs";
 
 import ConfirmModal from './ConfirmModal';
 
@@ -127,7 +128,21 @@ export default function Folder({ folder }) {
                         state={{ folder: folder }}
                         style={{ textDecoration: 'none', color: 'inherit' }}
                     >
-                        Open
+                        <Button
+                            variant="text"
+                            startIcon={<BsFillFolderSymlinkFill size={18} />}
+                            sx={{
+                                color: "darkslategray",
+                                textTransform: "none",
+                                '&:hover': {
+                                    bgcolor: "#f5f5f5",
+                                }
+                            }}
+                            disableElevation
+                            disableRipple
+                        >
+                            Open
+                        </Button>
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={() => {
