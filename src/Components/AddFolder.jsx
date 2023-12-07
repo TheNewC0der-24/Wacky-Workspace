@@ -1,22 +1,25 @@
 import React, { useState } from 'react'
-import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import {
+    ListItemText,
+    ListItemIcon,
+    IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    TextField,
+    Box
+} from '@mui/material';
 import { BiSolidFolderPlus } from 'react-icons/bi';
 import Services from '../Services/Services';
 import { useAuth } from '../Context/AuthContext';
 import { serverTimestamp } from 'firebase/firestore';
 import { ROOT_FOLDER } from '../Hooks/useFolder';
+import { notification } from 'antd';
 
-export default function AddFolderButton({ currentFolder }) {
-    const [open, setOpen] = useState(false);
+export default function AddFolderButton({ currentFolder, openModal, handleOpenModal, handleCloseModal }) {
     const [folderName, setFolderName] = useState('');
-
-    const openModal = () => {
-        setOpen(true);
-    }
-
-    const closeModal = () => {
-        setOpen(false);
-    }
 
     const { currentUser } = useAuth();
 
@@ -39,10 +42,15 @@ export default function AddFolderButton({ currentFolder }) {
         }
 
         try {
-            // Add folder in database
             await Services.addFolder(newFolder);
             setFolderName('');
-            closeModal();
+            handleCloseModal();
+            notification.success({
+                message: `${folderName}`,
+                description: 'Folder added successfully',
+                placement: 'topRight',
+                duration: 3,
+            });
         } catch (error) {
             console.log(error);
         }
@@ -50,22 +58,16 @@ export default function AddFolderButton({ currentFolder }) {
 
     return (
         <>
-            <IconButton
-                sx={{
-                    color: 'white',
-                    bgcolor: 'primary.main',
-                    '&:hover': {
-                        bgcolor: 'primary.dark',
-                    },
-                }}
-                onClick={openModal}
+            <Box display="flex" alignItems="center">
+                <ListItemIcon>
+                    <BiSolidFolderPlus size={25} />
+                </ListItemIcon>
+                <ListItemText primary="New Folder" onClick={handleOpenModal} />
+            </Box>
 
-            >
-                <BiSolidFolderPlus />
-            </IconButton>
 
             {/* Modal */}
-            <Dialog open={open} onClose={closeModal} maxWidth="xs" fullWidth>
+            <Dialog open={openModal} onClose={handleCloseModal} maxWidth="xs" fullWidth>
                 <DialogTitle>
                     Add New Folder
                 </DialogTitle>
@@ -84,8 +86,8 @@ export default function AddFolderButton({ currentFolder }) {
                         />
                     </DialogContent>
                     <DialogActions>
+                        <Button variant='outlined' size="small" onClick={handleCloseModal}>Cancel</Button>
                         <Button type='submit' variant='contained' size="small">Add</Button>
-                        <Button variant='outlined' size="small" onClick={closeModal}>Cancel</Button>
                     </DialogActions>
                 </form>
             </Dialog>
