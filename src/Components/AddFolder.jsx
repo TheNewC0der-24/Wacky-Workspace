@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import {
     ListItemText,
     ListItemIcon,
-    IconButton,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     Button,
     TextField,
-    Box
 } from '@mui/material';
 import { BiSolidFolderPlus } from 'react-icons/bi';
 import Services from '../Services/Services';
@@ -18,7 +16,7 @@ import { serverTimestamp } from 'firebase/firestore';
 import { ROOT_FOLDER } from '../Hooks/useFolder';
 import { notification } from 'antd';
 
-export default function AddFolderButton({ currentFolder, openModal, handleOpenModal, handleCloseModal }) {
+export default function AddFolderButton({ currentFolder, openModal, handleCloseModal }) {
     const [folderName, setFolderName] = useState('');
 
     const { currentUser } = useAuth();
@@ -58,12 +56,10 @@ export default function AddFolderButton({ currentFolder, openModal, handleOpenMo
 
     return (
         <>
-            <Box display="flex" alignItems="center">
-                <ListItemIcon>
-                    <BiSolidFolderPlus size={25} />
-                </ListItemIcon>
-                <ListItemText primary="New Folder" onClick={handleOpenModal} />
-            </Box>
+            <ListItemIcon>
+                <BiSolidFolderPlus size={25} />
+            </ListItemIcon>
+            <ListItemText primary="New Folder" />
 
 
             {/* Modal */}
@@ -86,7 +82,10 @@ export default function AddFolderButton({ currentFolder, openModal, handleOpenMo
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button variant='outlined' size="small" onClick={handleCloseModal}>Cancel</Button>
+                        <Button variant='outlined' size="small" onClick={(e) => {
+                            e.stopPropagation();
+                            handleCloseModal();
+                        }}>Cancel</Button>
                         <Button type='submit' variant='contained' size="small">Add</Button>
                     </DialogActions>
                 </form>
