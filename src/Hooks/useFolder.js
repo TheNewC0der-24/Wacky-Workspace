@@ -8,10 +8,10 @@ const ACTIONS = {
     SELECT_FOLDER: 'select-folder',
     UPDATE_FOLDER: 'update-folder',
     SET_CHILD_FOLDERS: 'set-child-folders',
-    // SET_CHILD_FILES: 'set-child-files'
+    SET_CHILD_FILES: 'set-child-files'
 }
 
-const ROOT_FOLDER = { name: 'Root', id: null, path: [] };
+export const ROOT_FOLDER = { name: 'Root', id: null, path: [] };
 
 function folderReducer(state, { type, payload }) {
     switch (type) {
@@ -31,6 +31,11 @@ function folderReducer(state, { type, payload }) {
             return {
                 ...state,
                 childFolders: payload.childFolders
+            }
+        case ACTIONS.SET_CHILD_FILES:
+            return {
+                ...state,
+                childFiles: payload.childFiles
             }
         default:
             return state;
@@ -84,7 +89,22 @@ export function useFolder(folderId = null, folder = null) {
         // Cleanup function to unsubscribe from the snapshot listener when the component unmounts
         return () => unsubscribe();
 
-    }, [folderId]);
+    }, [folderId, currentUser]);
+
+    useEffect(() => {
+        const filesCollection = collection(db, 'files');
+        const q = query(filesCollection, where("folderId", "==", folderId), where("userId", "==", currentUser.uid), orderBy("createdAt"));
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            dispatch({
+                type: ACTIONS.SET_CHILD_FILES, payload: { childFiles: snapshot.docs.map(formatDoc) }
+            });
+        });
+
+        // Cleanup function to unsubscribe from the snapshot listener when the component unmounts
+        return () => unsubscribe();
+
+    }, [folderId, currentUser]);
 
     return state;
 }
