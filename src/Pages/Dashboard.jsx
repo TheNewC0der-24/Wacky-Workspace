@@ -34,11 +34,15 @@ import Breadcrumbs from '../Components/Breadcrumbs';
 
 import { useFolder, ROOT_FOLDER } from '../Hooks/useFolder';
 
+import { useSearch } from '../Context/SearchContext';
+
 export default function Dashboard() {
     const navigate = useNavigate();
     const { folderId } = useParams();
     const location = useLocation();
     const { state = {} } = location;
+
+    const { searchTerm } = useSearch();
 
     const [uploadProgress, setUploadProgress] = useState(0);
     const [show, setShow] = useState(false);
@@ -92,6 +96,14 @@ export default function Dashboard() {
 
     const sortedFolders = sortByField(childFolders, sortField, isAscending);
     const sortedFiles = sortByField(childFiles, sortField, isAscending);
+
+    const filteredFolders = sortedFolders.filter(folder =>
+        folder.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filteredFiles = sortedFiles.filter(file =>
+        file.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <Container maxWidth="xl">
@@ -236,11 +248,11 @@ export default function Dashboard() {
                         }
 
                         {
-                            childFolders.length > 0 && (
+                            filteredFolders.length > 0 && (
                                 <>
                                     <Typography variant="h6">Folders</Typography>
                                     <Grid container spacing={2} sx={{ p: 2 }}>
-                                        {sortedFolders.map((childFolder) => (
+                                        {filteredFolders.map((childFolder) => (
                                             <Grid key={childFolder.id} item xs={12} sm={6} md={6} lg={2.5}>
                                                 <Folder folder={childFolder} />
                                             </Grid>
@@ -250,13 +262,13 @@ export default function Dashboard() {
                             )
                         }
 
-                        {childFolders.length > 0 && childFiles.length > 0 && <Divider sx={{ my: 2 }} />}
+                        {filteredFolders.length > 0 && filteredFiles.length > 0 && <Divider sx={{ my: 2 }} />}
 
-                        {childFiles.length > 0 && (
+                        {filteredFiles.length > 0 && (
                             <>
                                 <Typography variant="h6">Files</Typography>
                                 <Grid container spacing={2} sx={{ p: 2 }}>
-                                    {sortedFiles.map((childFile) => (
+                                    {filteredFiles.map((childFile) => (
                                         <Grid key={childFile.id} item xs={12} sm={6} md={6} lg={2.5}>
                                             <File file={childFile} />
                                         </Grid>
@@ -266,7 +278,7 @@ export default function Dashboard() {
                         )}
 
                         {
-                            childFolders.length === 0 && childFiles.length === 0 && (
+                            filteredFolders.length === 0 && filteredFiles.length === 0 && (
                                 <Alert severity="info" sx={{ mt: 2 }}>This folder is empty</Alert>
                             )
                         }
