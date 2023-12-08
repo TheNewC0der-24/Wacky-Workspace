@@ -6,12 +6,15 @@ import { AuthProvider } from './Context/AuthContext.jsx'
 import { theme } from "./Theme/theme.js";
 
 import { ThemeProvider } from "@mui/material/styles";
+import { SearchProvider } from './Context/SearchContext.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ThemeProvider theme={theme}>
     <AuthProvider>
-      <App />
+      <SearchProvider>
+        <App />
+      </SearchProvider>
     </AuthProvider>
   </ThemeProvider>,
 )
