@@ -22,16 +22,14 @@ export default function TableView({ folders, files }) {
     const [openFileMenu, setOpenFileMenu] = useState(null);
     const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [openRename, setOpenRename] = useState(false);
-    const [newFolderName, setNewFolderName] = useState(folders.map((folder) => folder.name));
-    const [newFileName, setNewFileName] = useState(files.map((file) => file.name));
     const [folderId, setFolderId] = useState("");
     const [fileId, setFileId] = useState("");
     const [folderName, setFolderName] = useState("");
+    const [newFolderName, setNewFolderName] = useState("");
     const [fileName, setFileName] = useState("");
+    const [newFileName, setNewFileName] = useState("");
     const [fileUrl, setFileUrl] = useState("");
     const [fileType, setFileType] = useState("");
-
-    const type = "folder";
 
     const header = [
         { id: 'name', label: 'Name', minWidth: 100 },
@@ -47,17 +45,19 @@ export default function TableView({ folders, files }) {
     const openFile = Boolean(openFileMenu);
 
     const handleOpenFolderMenu = (event, id, name, type) => {
+        setFileType(type);
         setOpenFolderMenu(event.currentTarget);
         setFolderId(id);
         setFolderName(name);
-        setFileType(type);
+        setNewFolderName(name);
     };
     const handleOpenFileMenu = (event, id, name, url, type) => {
+        setFileType(type);
         setOpenFileMenu(event.currentTarget);
         setFileId(id);
         setFileName(name);
+        setNewFileName(name);
         setFileUrl(url);
-        setFileType(type);
     };
 
     const handleCloseFolderMenu = () => {
@@ -303,16 +303,29 @@ export default function TableView({ folders, files }) {
             <Dialog open={openRename} onClose={() => setOpenRename(false)} maxWidth="xs" fullWidth>
                 <DialogTitle>Rename</DialogTitle>
                 <DialogContent dividers>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label={fileType === "folder" ? "Enter New Folder Name" : "Enter New File Name"}
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={fileType === "folder" ? newFolderName : newFileName}
-                        onChange={fileType === "folder" ? (e) => setNewFolderName(e.target.value) : (e) => setNewFileName(e.target.value)}
-                    />
+                    {
+                        fileType === "folder" ?
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Enter New Folder Name"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={newFolderName}
+                                onChange={(e) => setNewFolderName(e.target.value)}
+                            />
+                            : <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Enter New File Name"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={newFileName}
+                                onChange={(e) => setNewFileName(e.target.value)}
+                            />
+                    }
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -322,15 +335,27 @@ export default function TableView({ folders, files }) {
                     >
                         Cancel
                     </Button>
-                    <Button
-                        variant='contained'
-                        size="small"
-                        onClick={() => {
-                            fileType === "folder" ? handleUpdateFolder() : handleUpdateFile()
-                            setOpenRename(false);
-                        }}>
-                        Rename
-                    </Button>
+                    {
+                        fileType === "folder" ?
+                            <Button
+                                variant='contained'
+                                size="small"
+                                onClick={() => {
+                                    handleUpdateFolder();
+                                    setOpenRename(false);
+                                }}>
+                                Rename Folder
+                            </Button>
+                            : <Button
+                                variant='contained'
+                                size="small"
+                                onClick={() => {
+                                    handleUpdateFile();
+                                    setOpenRename(false);
+                                }}>
+                                Rename File
+                            </Button>
+                    }
                 </DialogActions>
             </Dialog>
         </>
