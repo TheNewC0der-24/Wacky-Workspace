@@ -139,7 +139,7 @@ const File = ({ file }) => {
                 }}
             >
                 <MenuItem onClick={() => { handleCloseFileMenu() }}>
-                    <Link to={file.url} style={{ textDecoration: 'none', color: 'inherit' }}    >
+                    <Link to={file.url} target='_blank' style={{ textDecoration: 'none', color: 'inherit' }}    >
                         <Button
                             variant="text"
                             startIcon={<MdFileOpen size={18} />}
