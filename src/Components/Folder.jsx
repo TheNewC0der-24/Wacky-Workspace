@@ -17,7 +17,7 @@ import { notification } from 'antd';
 export default function Folder({ folder }) {
     const [openFolderMenu, setOpenFolderMenu] = useState(null);
     const [openConfirmModal, setOpenConfirmModal] = useState(false);
-    const [openRenameModal, setOpenRenameModal] = useState(false);
+    const [openRename, setOpenRename] = useState(false);
     const [newFolderName, setNewFolderName] = useState(folder.name);
 
     const open = Boolean(openFolderMenu);
@@ -35,15 +35,15 @@ export default function Folder({ folder }) {
     }
 
     const handleRenameFolder = () => {
-        setOpenRenameModal(true);
+        setOpenRename(true);
     }
 
     const handleUpdateFolder = async () => {
         const folderRef = doc(db, 'folders', folder.id);
         await updateDoc(folderRef, { name: newFolderName });
-        setOpenRenameModal(false);
+        setOpenRename(false);
         notification.success({
-            message: 'Folder Updated',
+            message: 'Folder Name Updated',
             description: 'Folder name has been updated successfully.',
             placement: 'topRight',
         });
@@ -88,7 +88,7 @@ export default function Folder({ folder }) {
                 />
 
                 {
-                    openRenameModal &&
+                    openRename &&
                     <React.Fragment>
                         <CardContent>
                             <TextField
@@ -98,10 +98,9 @@ export default function Folder({ folder }) {
                                 value={newFolderName}
                                 onChange={(e) => setNewFolderName(e.target.value)}
                             />
-
                         </CardContent>
                         <CardActions>
-                            <Button fullWidth variant='outlined' size="small" onClick={() => setOpenRenameModal(false)}>
+                            <Button fullWidth variant='outlined' size="small" onClick={() => setOpenRename(false)}>
                                 Cancel
                             </Button>
                             <Button fullWidth variant='contained' size="small" onClick={handleUpdateFolder}>
@@ -187,15 +186,6 @@ export default function Folder({ folder }) {
                     </Button>
                 </MenuItem>
             </Menu>
-
-            {/* <input
-                type="text"
-                value={newFolderName}
-                onChange={(e) => setNewFolderName(e.target.value)}
-            /> */}
-            {/* <Button onClick={handleRenameFolder}>
-                Update Folder
-            </Button> */}
 
             {openConfirmModal && <ConfirmModal open={openConfirmModal} close={() => setOpenConfirmModal(false)} type="folder" folderName={folder.name} folderId={folder.id} />}
         </>
