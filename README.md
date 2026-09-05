@@ -39,11 +39,11 @@ Wacky Workspace – your versatile and user-friendly file management solution. W
 
 ### Built With
 
-<a href='https://github.com/shivamkapasia0' target="_blank"><img alt='react' src='https://img.shields.io/badge/React-100000?style=for-the-badge&logo=react&logoColor=61DBFB&labelColor=20232a&color=20232a'/></a>
+<a href='https://github.com/shivamkapasia0' target="_blank"><img alt='react' src='https://img.shields.io/badge/React-100000?style=for-the-badge&logo=react&logoColor=61DBFB&labelColor=39383E&color=39383E'/></a>
 <br />
-<a href='https://github.com/shivamkapasia0' target="_blank"><img alt='Mui' src='https://img.shields.io/badge/MUI-100000?style=for-the-badge&logo=Mui&logoColor=007fff&labelColor=000000&color=000000'/></a>
+<a href='https://github.com/shivamkapasia0' target="_blank"><img alt='Mui' src='https://img.shields.io/badge/MUI-100000?style=for-the-badge&logo=Mui&logoColor=007fff&labelColor=39383E&color=39383E'/></a>
 <br />
-<a href='https://github.com/shivamkapasia0' target="_blank"><img alt='ant design' src='https://img.shields.io/badge/AntD-100000?style=for-the-badge&logo=ant design&logoColor=f06a6f&labelColor=4a4a55&color=4a4a55'/></a>
+<a href='https://github.com/shivamkapasia0' target="_blank"><img alt='ant design' src='https://img.shields.io/badge/Ant_Design-100000?style=for-the-badge&logo=antdesign&logoColor=f14855&labelColor=39383E&color=39383E'/></a>
 <br/>
 <a href='https://github.com/shivamkapasia0' target="_blank"><img alt='firebase' src='https://img.shields.io/badge/Firebase-100000?style=for-the-badge&logo=firebase&logoColor=FFA611&labelColor=39383E&color=39383E'/></a>
 
